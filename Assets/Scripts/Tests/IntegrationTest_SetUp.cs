@@ -1,39 +1,24 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class IntegrationTest_SetUp : MonoBehaviour
 {
+    [SerializeField]
+    private RawImage _boardImage;
+
+    private Board _board;
+
+    public int CellsCount
+    {
+        get
+        {
+            return _board.CellsCount;
+        }
+    }
+           
     void Start()
     {
-        Board board = Board.instance;
-        board.ResizeBoard(4, 1);
-
-        board.KillAllCells();
-
-        board.SetCellsTo(SpawnFourCellsRow());        
-
-        board.DrawCells();
-
-        board.CellsApplyLifeRules();
-
-        board.DrawCells();
-    }
-
-    private List<CellState> SpawnFourCellsRow()
-    {
-        return new List<CellState>()
-        {
-            CellState.Alive,
-            CellState.Alive,
-            CellState.Alive,
-            CellState.Alive
-        };
-    }
-
-    public bool AllCellsAreDead()
-    {
-        return true;
-    }
+        _board = new Board(10, 10, _boardImage, 1f);
+        _board.Init();      
+    }    
 }

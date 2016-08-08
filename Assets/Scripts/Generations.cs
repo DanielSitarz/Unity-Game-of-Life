@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Generations : MonoBehaviour
-{
-    public static Generations instance;
-
-    public bool isStopped = true;
+public class Generations
+{    
+    public bool isStopped = false;
     public int generation = 0;
 
     public float advanceEveryS = 0.5f;   
@@ -13,19 +11,14 @@ public class Generations : MonoBehaviour
 
     private Board _board;    
 
-    void Awake()
+    public Generations(Board board)
     {
-        instance = this;
-    }
-
-    void Start()
-    {
-        _board = Board.instance;
+        _board = board;
 
         _nextAdvanceTime = Time.time + advanceEveryS;
     }
 
-    void Update()
+    public void Update()
     {
         if(Time.time > _nextAdvanceTime && !isStopped)
         {

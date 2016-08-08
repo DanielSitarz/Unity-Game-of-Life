@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Linq;
 
-public class Board : MonoBehaviour
-{
-    public static Board instance;
-
+public class Board
+{    
     [SerializeField]
     private int _width = 10;
     [SerializeField]
@@ -19,20 +17,17 @@ public class Board : MonoBehaviour
     [SerializeField]
     private int _minimumHeight = 10;
     [SerializeField]
-    private int _maximumHeight = 256;
+    private int _maximumHeight = 256;    
 
-    [Range(0.05f, 1f)]
-    public float alivePropability = 0.75f;
-
-    public RawImage board;
+    private RawImage _boardImage;
 
     private Texture2D _boardTexture;
 
-    private List<Cell> _cells;
+    private List<Cell> _cells = new List<Cell>();
+        
+    private float _alivePropability;
 
-    private Generations _generations;    
-
-    public int CellsAmount
+    public int CellsCount
     {
         get
         {
@@ -40,22 +35,23 @@ public class Board : MonoBehaviour
         }
     }
 
-    void Awake()
+    public Board(int width, int height, RawImage boardImage, float alivePropability)
     {
-        instance = this;
+        _width = width;
+        _height = height;
 
-        _cells = new List<Cell>();        
+        _boardImage = boardImage;
 
-        CreateBoardTexture();
+        _alivePropability = alivePropability;
     }
 
-    void Start()
+    public void Init()
     {
-        _generations = Generations.instance;
+        CreateBoardTexture();        
 
         PopulateBoard();
 
-        AddNeighboursForCells();        
+        AddNeighboursForCells();
 
         New();
     }
@@ -64,9 +60,7 @@ public class Board : MonoBehaviour
     {
         KillAllCells();
 
-        SetAllCellsToRandomStates();
-
-        _generations.Reset();
+        SetAllCellsToRandomStates();        
     }
 
     private void CreateBoardTexture()
@@ -74,13 +68,14 @@ public class Board : MonoBehaviour
         _boardTexture = new Texture2D(_width, _height, TextureFormat.RGB24, false);
         _boardTexture.anisoLevel = 1;
         _boardTexture.filterMode = FilterMode.Point;
-        board.texture = _boardTexture;
+
+        _boardImage.texture = _boardTexture;
     }
 
     public void ResizeBoard(int newWidth, int newHeight)
     {
         _width = newWidth;
-        _height = newHeight;        
+        _height = newHeight;
 
         CreateBoardTexture();
 
@@ -96,7 +91,7 @@ public class Board : MonoBehaviour
         for (int x = 0; x < _width; x++)
         {
             for (int y = 0; y < _height; y++)
-            {                
+            {
                 _boardTexture.SetPixel(x, y, _cells[y + x * _height].Color);
             }
         }
@@ -117,7 +112,7 @@ public class Board : MonoBehaviour
                 _cells.Add(cell);
             }
         }
-    }    
+    }
 
     public void SetAllCellsToRandomStates()
     {
@@ -129,7 +124,7 @@ public class Board : MonoBehaviour
 
     public void SetRandomCellState(Cell cell)
     {
-        cell.SetCellState(UnityEngine.Random.value < alivePropability ? CellState.Alive : CellState.Dead);
+        cell.SetCellState(Random.value < _alivePropability ? CellState.Alive : CellState.Dead);
     }
 
     public void KillAllCells()
@@ -138,11 +133,6 @@ public class Board : MonoBehaviour
         {
             cell.currentCellState = CellState.Dead;
         }
-    }
-
-    public void AddCell(Cell cell)
-    {
-        _cells.Add(cell);
     }
 
     private void AddNeighboursForCells()
