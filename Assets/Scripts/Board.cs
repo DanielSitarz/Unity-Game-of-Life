@@ -4,27 +4,18 @@ using UnityEngine.UI;
 using System.Linq;
 
 public class Board
-{    
+{
     [SerializeField]
     private int _width = 10;
     [SerializeField]
     private int _height = 10;
-
-    [SerializeField]
-    private int _minimumWidth = 10;
-    [SerializeField]
-    private int _maximumWidth = 256;
-    [SerializeField]
-    private int _minimumHeight = 10;
-    [SerializeField]
-    private int _maximumHeight = 256;    
 
     private RawImage _boardImage;
 
     private Texture2D _boardTexture;
 
     private List<Cell> _cells = new List<Cell>();
-        
+
     private float _alivePropability;
 
     public int CellsCount
@@ -47,7 +38,7 @@ public class Board
 
     public void Init()
     {
-        CreateBoardTexture();        
+        CreateBoardTexture();
 
         PopulateBoard();
 
@@ -60,13 +51,13 @@ public class Board
     {
         KillAllCells();
 
-        SetAllCellsToRandomStates();        
+        SetAllCellsToRandomStates();
     }
 
     private void CreateBoardTexture()
     {
         _boardTexture = new Texture2D(_width, _height, TextureFormat.RGB24, false);
-        _boardTexture.anisoLevel = 1;
+        _boardTexture.anisoLevel = 0;
         _boardTexture.filterMode = FilterMode.Point;
 
         _boardImage.texture = _boardTexture;
@@ -81,9 +72,7 @@ public class Board
 
         PopulateBoard();
 
-        AddNeighboursForCells();
-
-        New();
+        AddNeighboursForCells();        
     }
 
     public void DrawCells()
@@ -207,16 +196,5 @@ public class Board
             cell.SetCellState(states[i]);
             i++;
         }
-    }
-
-    public void SetZoom(float zoom)
-    {
-        int newWidth = Mathf.FloorToInt(zoom * _maximumWidth);
-        int newHeight = Mathf.FloorToInt(zoom * _maximumHeight);
-
-        if (newWidth < _minimumWidth) newWidth = _minimumWidth;
-        if (newHeight < _minimumHeight) newHeight = _minimumHeight;
-
-        ResizeBoard(newWidth, newHeight);
-    }
+    }    
 }
