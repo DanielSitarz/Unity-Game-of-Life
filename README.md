@@ -1,7 +1,7 @@
 #Conway's Game of Life
 
-Made in C# using Unity game engine.
+Made in C# using Unity (5.4.0) game engine.
 
-Mostly to learn TDD.
+Mostly to learn TDD. But as you see there is no a lot of tests :(
 
-Any contributors welcome!
+Contributors welcome! 
