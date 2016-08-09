@@ -12,9 +12,17 @@ public class UI : MonoBehaviour
     [SerializeField]
     private Slider _boardSizeFactor;
 
+    [SerializeField]
+    private Text _generationsStatistics;
+
     void Start()
     {
         _ticksPerSecond.value = _gameOfLife.TicksPerSecond;
+    }
+
+    void LateUpdate()
+    {
+        UpdateGenerationsStatistics();
     }
 
     public void NewGame()
@@ -29,6 +37,20 @@ public class UI : MonoBehaviour
 
     public void SetTicksPerSecond(float ticksPerSecond)
     {
-        _gameOfLife.TicksPerSecond = (int) ticksPerSecond;
+        if (ticksPerSecond == _ticksPerSecond.maxValue)
+        {
+            ticksPerSecond = -1;
+        }
+
+        _gameOfLife.TicksPerSecond = (int)ticksPerSecond;
+    }
+
+    public void UpdateGenerationsStatistics()
+    {
+        int currentGeneration = _gameOfLife.GetCurrentGeneration();
+
+        float generationsPerSecond = _gameOfLife.GetTicksPerSecond();
+
+        _generationsStatistics.text = string.Format("{0} ({1})", currentGeneration, generationsPerSecond);
     }
 }

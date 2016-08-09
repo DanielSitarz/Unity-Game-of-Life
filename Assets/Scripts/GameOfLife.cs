@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
 
 public class GameOfLife : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class GameOfLife : MonoBehaviour
     private Board _board;
     private Ticker _ticker;
 
-    private bool _isInitialized = false;
+    private bool _isInitialized = false;    
 
     public int TicksPerSecond
     {
@@ -43,7 +44,7 @@ public class GameOfLife : MonoBehaviour
             _ticksPerSecond = value;
             _ticker.TicksPerSecond = value;
         }
-    }
+    }    
 
     void Awake()
     {
@@ -85,5 +86,15 @@ public class GameOfLife : MonoBehaviour
         _board.ResizeBoard(newWidth, newHeight);
 
         NewGame();
+    }
+
+    public int GetCurrentGeneration()
+    {
+        return _ticker.generation;
+    }
+
+    public float GetTicksPerSecond()
+    {
+        return _ticker.generation / (Time.time - _ticker.startTime);
     }
 }

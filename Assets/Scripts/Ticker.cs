@@ -18,11 +18,15 @@ public class Ticker
 
     private Board _board;
 
+    public float startTime;
+
     public Ticker(Board board)
     {
         _board = board;
 
         _nextTickTime = Time.time + _tickTime;
+
+        startTime = Time.time;
     }
 
     public void Update()
@@ -46,5 +50,7 @@ public class Ticker
     public void Reset()
     {
         generation = 0;
+
+        startTime = Time.time;
     }
 }
