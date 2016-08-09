@@ -186,15 +186,5 @@ public class Board
         {
             cell.CountAliveNeighbours();
         }
-    }
-
-    public void SetCellsTo(List<CellState> states)
-    {
-        int i = 0;
-        foreach (Cell cell in _cells)
-        {
-            cell.SetCellState(states[i]);
-            i++;
-        }
-    }    
+    } 
 }
